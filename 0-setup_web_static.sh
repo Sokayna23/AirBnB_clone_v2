@@ -10,7 +10,10 @@ sudo mkdir -p /data/web_static/releases/
 sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test/
 sudo touch /data/web_static/current/index.html
-sudo chown -R ubuntu:ubuntu /data/
+rm -rf /data/web_static/current
+ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo chown -R ubuntu /data/
+sudo chgrp -R ubuntu /data/
 sudo tee /data/web_static/current/index.html <<EOF
 <html>
   <head>
@@ -20,8 +23,6 @@ sudo tee /data/web_static/current/index.html <<EOF
   </body>
 </html>
 EOF
-rm -rf /data/web_static/current
-ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo cp /data/web_static/current/index.html  /data/web_static/releases/test/index.html
 echo "server {
    listen 80 default_server;
