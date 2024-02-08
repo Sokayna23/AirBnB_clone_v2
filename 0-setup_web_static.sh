@@ -9,21 +9,10 @@ sudo mkdir -p /data/web_static/
 sudo mkdir -p /data/web_static/releases/
 sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test/
-sudo touch /data/web_static/current/index.html
-rm -rf /data/web_static/current
-ln -sf /data/web_static/releases/test/ /data/web_static/current
-sudo chown -R ubuntu /data/
-sudo chgrp -R ubuntu /data/
-sudo tee /data/web_static/current/index.html <<EOF
-<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>
-EOF
-sudo cp /data/web_static/current/index.html  /data/web_static/releases/test/index.html
+sudo echo "Hellooo I'm sokayna!" | sudo tee /data/web_static/releases/test/index.html
+sudo rm -rf /data/web_static/current
+sudo ln -nfs /data/web_static/releases/test/ /data/web_static/current
+sudo chown -R ubuntu:ubuntu /data/
 echo "server {
    listen 80 default_server;
    listen [::]:80 default_server;
