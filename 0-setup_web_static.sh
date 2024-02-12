@@ -30,6 +30,6 @@ echo "server {
    location = /404.html{
                  internal;
          }
-}" > /etc/nginx/sites-available/default
+}" | sudo tee /etc/nginx/sites-available/default
 sudo nginx -t
 sudo service nginx restart
