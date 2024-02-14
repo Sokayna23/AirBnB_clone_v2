@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Fabric script that distributes an archive to web servers """
-from fabric.api import put, run, env
+from fabric.api import *
 from os.path import exists
 from os import makedirs
 
@@ -9,7 +9,23 @@ env.hosts = ['18.210.14.153', '34.229.69.147']
 env.user = "ubuntu"
 env.key_filename = "~/.ssh/id_rsa"
 
+@task
+def do_pack():
+    """ generates a .tgz archive from the content of web_static folder """
+    try:
+        local("mkdir -p versions")
+        now = datetime.now()
+        archive_name = "web_static_{}{}{}{}{}{}.tgz".format(
+                now.year, now.month, now.day, now.hour, now.minute, now.second
+                )
+        archive_path = "versions/{}".format(archive_name)
+        local("tar -cvaf {} web_static".format(archive_path))
+        return (archive_path)
 
+    except Exception as e:
+        return None
+
+@task
 def do_deploy(archive_path):
     """ do_deploy function """
 
@@ -20,7 +36,7 @@ def do_deploy(archive_path):
         put(archive_path, '/tmp/')
 
         filename = archive_path.split('/')[-1]
-        folder = "data/web_static/releases/{}".format(filename.split('.')[0])
+        folder = "/data/web_static/releases/{}".format(filename.split('.')[0])
         run("mkdir -p {}".format(folder))
 
         run("tar -xzf /tmp/{} -C {}".format(filename, folder))
@@ -38,3 +54,4 @@ def do_deploy(archive_path):
         return True
     except Exception as e:
         return False
+
