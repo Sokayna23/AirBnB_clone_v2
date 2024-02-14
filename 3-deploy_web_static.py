@@ -3,7 +3,7 @@
 from fabric.api import *
 from os.path import exists
 from os import makedirs
-
+from datetime import datetime
 
 env.hosts = ['18.210.14.153', '34.229.69.147']
 env.user = "ubuntu"
@@ -71,9 +71,7 @@ def deploy():
     if not archive_path:
         return False
 
-    deploy = do_deploy(archive_path)
-
-    return (deploy)
+    return do_deploy(archive_path)
 
 if __name__ == "__main__":
     deploy()
